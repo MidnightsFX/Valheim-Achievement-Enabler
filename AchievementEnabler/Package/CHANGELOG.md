@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.1
+- Reverts to gating behind devcommands for admin commands, supporting the 1.0.12 update better
+
 ## 0.3.0
 
 - Removed the preloader patcher. If you installed by hand, delete `BepInEx/patchers/AchievementEnabler/`.
@@ -13,7 +16,8 @@
 - The main menu still shows the "modded" label.
 - Characters and worlds already marked as cheated no longer show as cheated in the achievements panel. Both
   can be turned off in the config.
-- New admin-only console command `clearcheateditems` clears the cheated flag from the items you are carrying.
+- New cheat command `clearcheateditems` clears the cheated flag from the items you are carrying. Like other
+  cheat commands it needs `devcommands`, and only works in singleplayer or for the host.
 
 ## 0.2.0
 

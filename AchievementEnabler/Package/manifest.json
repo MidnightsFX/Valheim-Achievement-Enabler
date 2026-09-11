@@ -1,7 +1,7 @@
 {
   "name": "AchievementEnabler",
   "description": "Earn Valheim achievements with mods installed, and clear old cheat marks from characters, worlds and items.",
-  "version_number": "0.3.0",
+  "version_number": "0.3.1",
   "website_url": "https://discord.gg/Dmr9PQTy9m",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2333"

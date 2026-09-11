@@ -9,12 +9,14 @@ namespace AchievementEnabler
     /// <c>s_bypassCheatChecks</c> on the game stops creating them, but items flagged before - or in the game of
     /// a player without this mod - keep theirs. A flagged item no longer affects achievements, but its tooltip
     /// still says it is cheated, the achievements panel still shows a cheated notice while you carry it, and
-    /// the flag is saved with the item for whenever this mod is not installed. Clearing them is an explicit,
-    /// admin-only command rather than something that happens on load.
+    /// the flag is saved with the item for whenever this mod is not installed. Clearing them is an explicit
+    /// cheat command rather than something that happens on load.
     ///
-    /// The admin check is the game's own <c>ZNet.LocalPlayerIsAdminOrHost()</c>: true for the host,
-    /// singleplayer included, and on a dedicated server for anyone in the adminlist.txt the server sends
-    /// each client. Like every achievement check, it runs on the client.
+    /// Being a cheat command is its only permission check. The game accepts a cheat command only with
+    /// devcommands on, and only on the server (<c>Terminal.IsCheatsEnabled()</c>): the host, singleplayer
+    /// included. In vanilla 1.0.12 that shuts out a player connected to a dedicated server, even one in its
+    /// adminlist.txt. Like every cheat command under this mod, it runs without the confirmation prompt and
+    /// does not mark the character as cheated; see <see cref="AchievementGatePatches"/>.
     ///
     /// One case this cannot fix for good: the game flags any item with over 10,000 total damage as cheated
     /// again whenever an inventory loads, so such an item stays clear only until the character next loads.
@@ -25,12 +27,12 @@ namespace AchievementEnabler
 
         internal static void Register()
         {
-            // Not isCheat, which would put it behind devcommands. isNetwork makes it invalid in the main menu,
-            // where there is no character.
+            // isCheat puts it behind devcommands. isNetwork makes it invalid in the main menu, where there is
+            // no character.
             _ = new Terminal.ConsoleCommand(Name,
-                "clears the cheated flag from every item you are carrying (admin only)",
+                "clears the cheated flag from every item you are carrying",
                 (Terminal.ConsoleEventFailable)Run,
-                isCheat: false,
+                isCheat: true,
                 isNetwork: true);
         }
 
@@ -38,13 +40,9 @@ namespace AchievementEnabler
         private static object Run(Terminal.ConsoleEventArgs args)
         {
             Player player = Player.m_localPlayer;
-            if (player == null || ZNet.instance == null)
+            if (player == null)
             {
                 return "you need to be in a world with a character loaded";
-            }
-            if (!ZNet.instance.LocalPlayerIsAdminOrHost())
-            {
-                return "only admins can clear cheated items";
             }
 
             var cleared = new List<string>();

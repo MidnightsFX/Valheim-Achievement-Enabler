@@ -12,9 +12,9 @@ You can now use commands, spawn items, and build with cheated materials without 
 cheated in the achievements panel. A character's mark is cleared each time it loads; a world's keys are
 left alone. Either can be turned off in `MidnightsFX.AchievementEnabler.cfg`.
 
-**Admins can clear cheated items.** Run `clearcheateditems` in the console to clear the cheated flag from
-everything your character is carrying. It needs admin rights: in singleplayer, or when hosting, that is
-you; on a dedicated server you need to be in its `adminlist.txt`.
+**Cheated items can be cleared.** `clearcheateditems` is a cheat command: turn on `devcommands`, then run
+it in the console to clear the cheated flag from everything your character is carrying. Like the game's
+other cheat commands, it only works in singleplayer or for the host.
 
 ## What still shows as cheated
 

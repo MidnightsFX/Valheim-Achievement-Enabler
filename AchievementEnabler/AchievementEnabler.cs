@@ -21,14 +21,14 @@ namespace AchievementEnabler
     ///   * <see cref="MainMenuPatches"/> - the main menu still shows the game is modded.
     ///   * <see cref="CheatFlagPatches"/> - old cheat marks on characters and worlds stop showing in the
     ///     achievements panel, each behind a config toggle.
-    ///   * <see cref="ClearCheatedItemsCommand"/> - an admin clears cheated items by command.
+    ///   * <see cref="ClearCheatedItemsCommand"/> - a cheat command clears the cheated flag from carried items.
     /// </summary>
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class AchievementEnabler : BaseUnityPlugin
     {
         public const string PluginGUID = "MidnightsFX.AchievementEnabler";
         public const string PluginName = "AchievementEnabler";
-        public const string PluginVersion = "0.3.0";
+        public const string PluginVersion = "0.3.1";
 
         internal static ManualLogSource Log;
 
