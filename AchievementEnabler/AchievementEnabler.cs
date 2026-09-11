@@ -28,7 +28,7 @@ namespace AchievementEnabler
     {
         public const string PluginGUID = "MidnightsFX.AchievementEnabler";
         public const string PluginName = "AchievementEnabler";
-        public const string PluginVersion = "0.3.1";
+        public const string PluginVersion = "0.3.2";
 
         internal static ManualLogSource Log;
 

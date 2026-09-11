@@ -1,3 +1,4 @@
+using System.Reflection;
 using HarmonyLib;
 
 namespace AchievementEnabler
@@ -49,9 +50,40 @@ namespace AchievementEnabler
         // With it on, the game stops flagging new things as cheated - whatever spawn creates, creatures hit in
         // god mode, ghost mode or while debug flying, and what is built, crafted, cooked, smelted or fermented
         // from cheated materials. Anything flagged before stays flagged.
-        [HarmonyPatch(typeof(PlayerProfile), nameof(PlayerProfile.s_bypassCheatChecks), MethodType.Getter)]
+        //
+        // A dedicated server can be on an older build than its clients, and up to 1.0.7 the switch is a plain
+        // static field that nothing in the game writes. There the field is set to true once instead, since there
+        // is no getter to patch. Both are looked up with plain reflection: AccessTools logs a warning for
+        // whichever of the two is missing.
+        [HarmonyPatch]
         private static class BypassCheatChecks
         {
+            private const BindingFlags AnyStatic = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
+
+            private static readonly MethodInfo Getter = typeof(PlayerProfile)
+                .GetProperty(nameof(PlayerProfile.s_bypassCheatChecks), AnyStatic)?.GetGetMethod(true);
+
+            // False skips the class without an error. Harmony calls this again before patching the getter, so
+            // the field is only written on the path that patches nothing.
+            private static bool Prepare()
+            {
+                if (Getter != null) return true;
+
+                FieldInfo field = typeof(PlayerProfile).GetField(nameof(PlayerProfile.s_bypassCheatChecks), AnyStatic);
+                if (field != null && field.FieldType == typeof(bool))
+                {
+                    field.SetValue(null, true);
+                    Logger.LogInfo("PlayerProfile.s_bypassCheatChecks is a field in this game version; set it to true.");
+                }
+                else
+                {
+                    Logger.LogWarning("Could not find PlayerProfile.s_bypassCheatChecks, so the game will keep flagging new things as cheated. Achievements still count.");
+                }
+                return false;
+            }
+
+            private static MethodBase TargetMethod() => Getter;
+
             private static bool Prefix(ref bool __result)
             {
                 __result = true;

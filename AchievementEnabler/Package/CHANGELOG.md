@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.2
+- Adds flexible support for older and newer builds setting BypassCheatChecks
+
 ## 0.3.1
 - Reverts to gating behind devcommands for admin commands, supporting the 1.0.12 update better
 
