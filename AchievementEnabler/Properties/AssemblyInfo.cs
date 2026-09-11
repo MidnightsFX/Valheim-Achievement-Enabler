@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("AchievementEnabler")]
-[assembly: AssemblyDescription("Lets a modded Valheim earn achievements. The modded flag stays true; the checks that read it see false.")]
+[assembly: AssemblyDescription("Lets a modded Valheim earn achievements. Mods no longer count as cheating, and old cheat marks can be cleared.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MidnightMods")]
 [assembly: AssemblyProduct("AchievementEnabler")]

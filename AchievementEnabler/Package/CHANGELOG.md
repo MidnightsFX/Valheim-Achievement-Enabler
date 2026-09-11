@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0
+
+- Removed the preloader patcher. If you installed by hand, delete `BepInEx/patchers/AchievementEnabler/`.
+- Cheating no longer affects achievements. Being modded, having used cheat commands, a world with
+  non-standard keys and carrying spawned items no longer turn them off, and kills of spawned or god-mode
+  creatures, and picking up, eating or building with cheated items, now count.
+- The game no longer flags new items, creatures or buildings as cheated. Anything flagged before keeps
+  its flag.
+- Cheat commands run without the confirmation prompt and no longer mark your character as cheated, and
+  `setkey` accepts any key.
+- The main menu still shows the "modded" label.
+- Characters and worlds already marked as cheated no longer show as cheated in the achievements panel. Both
+  can be turned off in the config.
+- New admin-only console command `clearcheateditems` clears the cheated flag from the items you are carrying.
+- Removed the `KeepFlagTrue`, `FlagMember`, `ScopedFalseMethods` and `ForceFalseMethods` settings.
+
 ## 0.2.0
 
 Valheim 1.0

@@ -5,7 +5,7 @@
   Adapted from JotunnTemplatePlugin's copy of this file, with the Jotunn-specific parts taken
   out: there is no JotunnLib package here, so nothing else is racing to fill in VALHEIM_INSTALL,
   VALHEIM_MANAGED or BEPINEX_PATH, and nothing publicizes the game assemblies. What remains is
-  the path probing, which both projects here consume directly through <Reference> HintPaths.
+  the path probing, which the plugin consumes directly through <Reference> HintPaths.
 
   Everything below only fills in values that are still empty, so an explicit environment
   variable, an Environment.props, or -p:NAME=... always wins.
@@ -98,17 +98,17 @@
   </PropertyGroup>
 
   <!-- ==================== diagnostics ==================== -->
-  <!-- Every project in this repo resolves its BepInEx, Cecil and vanilla references straight off
+  <!-- The plugin resolves its BepInEx, Harmony and vanilla references straight off
        VALHEIM_MANAGED / BEPINEX_PATH via <Reference> HintPaths, so a missing install is always a
        real problem here - unlike the Jotunn-template original, which had to gate this on
        "does this project reference JotunnLib" because JotunnLib's props were what produced the
-       HintPaths. Both projects here consume them, so the check is unconditional.
+       HintPaths. Nothing here is conditional on that, so neither is the check.
        -->
   <Target Name="CheckValheimBuildPaths" BeforeTargets="BeforeBuild">
     <Warning Condition="!Exists('$(VALHEIM_MANAGED)')"
              Text="Valheim's Managed folder was not found (VALHEIM_INSTALL='$(VALHEIM_INSTALL)'). Vanilla references will not resolve. Set VALHEIM_INSTALL in Environment.props - see Environment.props.example." />
     <Warning Condition="!Exists('$(BEPINEX_PATH)\core\BepInEx.dll')"
-             Text="BepInEx was not found (BEPINEX_PATH='$(BEPINEX_PATH)'). BepInEx, Harmony and Mono.Cecil references will not resolve. Set BEPINEX_PATH in Environment.props - see Environment.props.example." />
+             Text="BepInEx was not found (BEPINEX_PATH='$(BEPINEX_PATH)'). BepInEx and Harmony references will not resolve. Set BEPINEX_PATH in Environment.props - see Environment.props.example." />
   </Target>
 
 </Project>

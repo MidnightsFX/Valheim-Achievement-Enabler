@@ -31,12 +31,13 @@
   </PropertyGroup>
 
   <!--
-    Note what is NOT here: any reference to assembly_valheim. Every game member this plugin touches
-    is resolved by name at runtime through AccessTools, because the whole point of the mod is to
-    cope with game code that does not exist yet. Compiling against the game would buy nothing and
-    would turn an upstream rename into a hard MissingFieldException instead of a logged warning.
+    Compiled against the game. Everything this plugin reads or writes is public, so the plain
+    assemblies are enough and nothing needs publicizing: assembly_valheim for the game itself, and
+    assembly_guiutils for Localization. The two private methods it patches (FejdStartup.SetupGui,
+    PlayerProfile.LoadPlayerFromDisk) are named by string in their [HarmonyPatch] attributes, and the
+    plugin applies each patch class on its own so a rename breaks only that one.
 
-    UnityEngine.CoreModule is still needed: BepInEx's BaseUnityPlugin derives from MonoBehaviour.
+    UnityEngine.CoreModule is needed too: BepInEx's BaseUnityPlugin derives from MonoBehaviour.
 
     Everything here is supplied at runtime, hence Private=false.
   -->
@@ -47,6 +48,14 @@
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(BEPINEX_PATH)\core\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_valheim">
+      <HintPath>$(VALHEIM_MANAGED)\assembly_valheim.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_guiutils">
+      <HintPath>$(VALHEIM_MANAGED)\assembly_guiutils.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <!-- Both are needed. MonoBehaviour lives in UnityEngine.CoreModule, but BepInEx's
