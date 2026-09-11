@@ -14,7 +14,6 @@
 - Characters and worlds already marked as cheated no longer show as cheated in the achievements panel. Both
   can be turned off in the config.
 - New admin-only console command `clearcheateditems` clears the cheated flag from the items you are carrying.
-- Removed the `KeepFlagTrue`, `FlagMember`, `ScopedFalseMethods` and `ForceFalseMethods` settings.
 
 ## 0.2.0
 

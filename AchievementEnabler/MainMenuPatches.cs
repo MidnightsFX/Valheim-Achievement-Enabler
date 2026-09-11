@@ -9,34 +9,45 @@ namespace AchievementEnabler
     /// The main menu keeps saying the game is modded.
     ///
     /// <c>FejdStartup.SetupGui</c> shows its "modded" label with <c>m_moddedText.SetActive(Game.isModded)</c>.
-    /// That read of the flag is rewritten to the constant <c>true</c>, so the label shows no matter what the
+    /// The argument to that call is rewritten to the constant <c>true</c>, so the label shows no matter what the
     /// flag holds - this plugin being loaded is proof enough. The flag itself is left as mods set it.
+    ///
+    /// The match is on the call, not on the flag read. Anything that already rewrote the read - the 0.2.0
+    /// preloader patcher folded it to a constant before Harmony ever saw it - leaves a different instruction
+    /// in that slot, and the label is still the thing to fix.
     /// </summary>
     internal static class MainMenuPatches
     {
         [HarmonyPatch(typeof(FejdStartup), "SetupGui")]
         private static class ModdedLabel
         {
+            // Harmony rebuilds a patched method, rerunning every transpiler on it, each time another mod patches
+            // it too. Without this the warning below repeats once per mod that touches SetupGui.
+            private static bool warned;
+
             private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
-                FieldInfo isModded = AccessTools.Field(typeof(Game), nameof(Game.isModded));
+                FieldInfo moddedText = AccessTools.Field(typeof(FejdStartup), nameof(FejdStartup.m_moddedText));
+                MethodInfo setActive = AccessTools.Method(typeof(UnityEngine.GameObject), nameof(UnityEngine.GameObject.SetActive));
                 var code = new List<CodeInstruction>(instructions);
 
                 int replaced = 0;
-                foreach (CodeInstruction instruction in code)
+                for (int i = 0; i + 2 < code.Count; i++)
                 {
-                    if (!instruction.LoadsField(isModded)) continue;
+                    // Load m_moddedText, push SetActive's bool with one instruction, call SetActive.
+                    if (!code[i].LoadsField(moddedText) || !code[i + 2].Calls(setActive)) continue;
 
-                    // Changed in place rather than swapped for a new instruction, so any label or exception
-                    // block attached to it stays attached.
-                    instruction.opcode = OpCodes.Ldc_I4_1;
-                    instruction.operand = null;
+                    // Changed in place rather than swapped for a new instruction, so any label or exception block
+                    // attached to it stays attached.
+                    code[i + 1].opcode = OpCodes.Ldc_I4_1;
+                    code[i + 1].operand = null;
                     replaced++;
                 }
 
-                if (replaced == 0)
+                if (replaced == 0 && !warned)
                 {
-                    Logger.LogWarning("FejdStartup.SetupGui no longer reads Game.isModded, so the main menu's modded label was not changed.");
+                    warned = true;
+                    Logger.LogWarning("Could not find m_moddedText.SetActive in FejdStartup.SetupGui, so the main menu's modded label was not changed.");
                 }
                 return code;
             }
