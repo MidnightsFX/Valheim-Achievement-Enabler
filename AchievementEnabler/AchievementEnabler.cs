@@ -17,7 +17,8 @@ namespace AchievementEnabler
     ///   * <see cref="AchievementGatePatches"/> - both checks that decide whether an achievement stat counts,
     ///     <c>CanGetAchievements</c> and <c>IsCheatedAtAll</c>, let everything through; the game's own
     ///     <c>PlayerProfile.s_bypassCheatChecks</c> switch always answers true, so it stops flagging new things
-    ///     as cheated; and the vanilla commands that rely on those checks keep working.
+    ///     as cheated; new drops, creature loot and trader items never start flagged, which covers the places that
+    ///     do not check that switch; and the vanilla commands that rely on those checks keep working.
     ///   * <see cref="MainMenuPatches"/> - the main menu still shows the game is modded.
     ///   * <see cref="CheatFlagPatches"/> - old cheat marks on characters and worlds stop showing in the
     ///     achievements panel, each behind a config toggle.

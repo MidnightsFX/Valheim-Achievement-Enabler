@@ -19,13 +19,17 @@ other cheat commands, it only works in singleplayer or for the host.
 ## What still shows as cheated
 
 Items flagged before you installed this mod keep the flag, and so do items flagged in the game of a player
-who doesn't have it. Creatures flagged before still drop flagged items. None of that affects achievements,
-but:
+who doesn't have it. None of that affects achievements, but:
 
 - Those items' tooltips say they are cheated.
 - While you carry one, the achievements panel shows a cheated notice, and picking one up shows the game's
   cheated-item message.
 - The flag is saved with the item, so it matters again if you remove this mod. `clearcheateditems` clears it.
+
+The flag no longer spreads to new items, though: wood and ore gathered with a flagged tool, loot from a
+creature flagged before, food cooked from flagged ingredients and anything traded with flagged items or coins
+all come out clean. A stack carries one flag, so a clean item added to a flagged stack you already carry
+counts as flagged along with the rest of it.
 
 Items with over 10,000 total damage are still flagged every time your character loads; the game's switch
 doesn't cover that check.

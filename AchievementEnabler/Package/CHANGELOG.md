@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3
+- Prevents cheated coins from causing cheated items from haldor
+- Prevents _existing_ cheated creatures from causing cheated drops
+
 ## 0.3.2
 - Adds flexible support for older and newer builds setting BypassCheatChecks
 

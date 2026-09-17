@@ -5,7 +5,8 @@ namespace AchievementEnabler
 {
     /// <summary>
     /// The two checks that decide whether an achievement stat is recorded, the game's own switch for
-    /// ignoring cheats, and the vanilla commands that lean on the second check.
+    /// ignoring cheats and the new items made where the game forgets to check it, and the vanilla commands that lean
+    /// on the second check.
     ///
     /// <c>Achievements.CanGetAchievements(bool cheated)</c> guards every achievement stat write, and the
     /// build-achievement unlock in <c>Piece</c>. It refuses when either:
@@ -88,6 +89,49 @@ namespace AchievementEnabler
             {
                 __result = true;
                 return false;
+            }
+        }
+
+        // The switch is checked separately wherever the game flags something, and three places that drop new items
+        // skip the check. A felled log (TreeLog) and a rock or ore vein (MineRock5) flag everything they drop when
+        // the tool that broke them is flagged, and a cooking station hands back cooked food with the flag of the raw
+        // item put on it. So an axe or pickaxe flagged before this mod was installed kept turning wood, copper and
+        // tin into cheated items, while stone from a small rock, which does check, came out clean. Every one of
+        // those drops is created through this method, as are drops from pickables, destroyed pieces, smelters and
+        // fermenters, so the flag is refused here for all of them. The GameObject overload calls this one.
+        [HarmonyPatch(typeof(ItemDrop), nameof(ItemDrop.OnCreateNew), new[] { typeof(ItemDrop), typeof(bool) })]
+        private static class NewItemDrop
+        {
+            private static void Prefix(ref bool cheated)
+            {
+                cheated = false;
+            }
+        }
+
+        // Creature loot does not go through OnCreateNew. The switch stops creatures being flagged, but one flagged
+        // before - spawned before this mod was installed, or by a player without it - keeps the flag in the world
+        // save, and its loot copies that flag, whether it drops from the body or later from the ragdoll. Both call
+        // this, and it sets the flag on each item itself.
+        [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.DropItems))]
+        private static class CreatureLoot
+        {
+            private static void Prefix(ref bool cheated)
+            {
+                cheated = false;
+            }
+        }
+
+        // Traders do not check the switch either. Buying flags the new item if any coins you carry are flagged, and
+        // selling flags the coins if any stack of what you sold is flagged. Both create the item through this
+        // overload, as do starting item sets, which already check the switch, and the tombstone command, which flags
+        // its coin every time. Crafting uses the overload this one calls, and checks the switch. Loading an
+        // inventory uses neither, so flags already saved on items are left alone.
+        [HarmonyPatch(typeof(Inventory), nameof(Inventory.AddItem), new[] { typeof(string), typeof(int), typeof(int), typeof(int), typeof(long), typeof(string), typeof(bool), typeof(bool) })]
+        private static class NewInventoryItem
+        {
+            private static void Prefix(ref bool cheated)
+            {
+                cheated = false;
             }
         }
 
