@@ -20,6 +20,9 @@ namespace AchievementEnabler
     /// Both are overridden. <c>CanGetAchievements</c> would already say yes on its own now that
     /// <c>PlayerProfile.s_bypassCheatChecks</c> answers true; the override stays so achievements keep counting
     /// if anything else patches that switch back off. <c>IsCheatedAtAll</c> ignores the switch entirely.
+    ///
+    /// One achievement check is also repaired here: the one for achievements awarded for holding other
+    /// achievements, which vanilla never fires.
     /// </summary>
     internal static class AchievementGatePatches
     {
@@ -41,6 +44,102 @@ namespace AchievementEnabler
                 __result = false;
                 return false;
             }
+        }
+
+        // Child of Odin and Kings & Queens are awarded for holding other achievements, and vanilla never
+        // hands them out while you are playing. The check that should do it reads
+        //
+        //     ... && achievement.CheckUnlocked() && !achievement.m_unlocked
+        //
+        // but CheckUnlocked() sets m_unlocked before returning true, so the second test is always false and
+        // the award never happens. Every other check in Achievements has the two the right way round. What
+        // is left is the sweep on world load, which resets m_unlocked for everything and re-tests in list
+        // order - so a meta achievement listed before the achievements it depends on is missed there too,
+        // and a player can be owed one indefinitely.
+        //
+        // Replaced with the same walk, testing m_unlocked first, and repeated until a pass awards nothing so
+        // that order in the list stops mattering.
+        [HarmonyPatch(typeof(Achievements), nameof(Achievements.CheckMetaAchievementProgressUnlock))]
+        private static class MetaAchievements
+        {
+            private static bool running;
+
+            private static void Award(Achievement achievement)
+            {
+                // Quietly while the game is re-testing everything on world load: the player has had these
+                // before and does not want a toast for each one every time they load in.
+                if (InitializeSweep.Running)
+                {
+                    Logger.LogDebug($"'{achievement.m_id}' is earned by holding other achievements, and was already due.");
+                    Achievements.AchievementEvent(achievement, synchronize: false, showPopup: false);
+                    return;
+                }
+
+                Logger.LogInfo($"Awarding '{achievement.m_id}', which is earned by holding other achievements.");
+                Achievements.AchievementEvent(achievement);
+            }
+
+            private static bool Prefix(string calleeId)
+            {
+                // AchievementEvent ends by calling this method again, so an award made below comes straight
+                // back in here. The loop already covers what that call would have done.
+                if (running || Achievements.m_instance == null)
+                {
+                    return false;
+                }
+
+                running = true;
+                try
+                {
+                    bool awardedAny;
+                    do
+                    {
+                        awardedAny = false;
+                        foreach (AchievementList list in Achievements.m_instance.m_achievementLists)
+                        {
+                            foreach (Achievement achievement in list.m_achievements)
+                            {
+                                if (achievement.m_id == calleeId || achievement.m_otherAchievementTriggers.Count == 0)
+                                {
+                                    continue;
+                                }
+                                if (achievement.m_unlocked || !achievement.CheckUnlocked())
+                                {
+                                    continue;
+                                }
+
+                                Award(achievement);
+                                awardedAny = true;
+                            }
+                        }
+                    }
+                    while (awardedAny);
+                }
+                finally
+                {
+                    running = false;
+                }
+
+                return false;
+            }
+        }
+
+        // Achievements.Initialize() runs when a world loads: it forgets every achievement, re-tests them all
+        // and re-awards the ones already earned quietly, with no popup, because the player has seen them
+        // before. Each of those awards calls the meta check above, so without knowing we are inside it the
+        // repaired check would pop a toast for Child of Odin every single load.
+        //
+        // Private, so named by string. If a future version renames it the patch fails on its own and the
+        // only cost is that popup.
+        [HarmonyPatch(typeof(Achievements), "Initialize")]
+        private static class InitializeSweep
+        {
+            internal static bool Running;
+
+            private static void Prefix() => Running = true;
+
+            // A finalizer, not a postfix, so a sweep that throws part-way still clears the flag.
+            private static void Finalizer() => Running = false;
         }
 
         // The game's own switch for ignoring cheats. In 1.0.12 it is a getter, not a field: true only when the

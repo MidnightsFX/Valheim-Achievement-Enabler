@@ -6,20 +6,18 @@ namespace AchievementEnabler
     /// <c>clearcheateditems</c>: clears the cheated flag from every item the local character is carrying.
     ///
     /// Item flags are the one cheat mark the game scatters rather than keeps in one place. With
-    /// <c>s_bypassCheatChecks</c> on the game stops creating them, but items flagged before - or in the game of
-    /// a player without this mod - keep theirs. A flagged item no longer affects achievements, but its tooltip
-    /// still says it is cheated, the achievements panel still shows a cheated notice while you carry it, and
-    /// the flag is saved with the item for whenever this mod is not installed. Clearing them is an explicit
-    /// cheat command rather than something that happens on load.
+    /// <c>s_bypassCheatChecks</c> on the game stops creating them, and <see cref="CheatFlagPatches"/> clears
+    /// the ones already saved as each item loads. What is left for this command is an item that is flagged in
+    /// memory and has not been through a load since: handed over by a player without this mod, or created by
+    /// something that flags it after it is already in your inventory. Its tooltip says it is cheated and the
+    /// achievements panel shows a cheated notice while you carry it, and until 1.0.14 it would also have
+    /// flagged any clean stack it was added to; now it refuses to stack with one at all.
     ///
     /// Being a cheat command is its only permission check. The game accepts a cheat command only with
     /// devcommands on, and only on the server (<c>Terminal.IsCheatsEnabled()</c>): the host, singleplayer
-    /// included. In vanilla 1.0.12 that shuts out a player connected to a dedicated server, even one in its
+    /// included. In vanilla 1.0.14 that still shuts out a player connected to a dedicated server, even one in its
     /// adminlist.txt. Like every cheat command under this mod, it runs without the confirmation prompt and
     /// does not mark the character as cheated; see <see cref="AchievementGatePatches"/>.
-    ///
-    /// One case this cannot fix for good: the game flags any item with over 10,000 total damage as cheated
-    /// again whenever an inventory loads, so such an item stays clear only until the character next loads.
     /// </summary>
     internal static class ClearCheatedItemsCommand
     {

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+- Cheated items stack again. Valheim 1.0.14 stopped a flagged item stacking with a clean one, so a single
+  flagged stack kept splitting every stack of that item. The flag is now cleared from every item as it
+  loads, wherever it loads from.
+- Counts progress made before the mod was installed.
+- Special Achievements checked
+
 ## 0.3.3
 - Prevents cheated coins from causing cheated items from haldor
 - Prevents _existing_ cheated creatures from causing cheated drops

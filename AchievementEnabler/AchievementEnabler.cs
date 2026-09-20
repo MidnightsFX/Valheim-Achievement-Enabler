@@ -18,10 +18,14 @@ namespace AchievementEnabler
     ///     <c>CanGetAchievements</c> and <c>IsCheatedAtAll</c>, let everything through; the game's own
     ///     <c>PlayerProfile.s_bypassCheatChecks</c> switch always answers true, so it stops flagging new things
     ///     as cheated; new drops, creature loot and trader items never start flagged, which covers the places that
-    ///     do not check that switch; and the vanilla commands that rely on those checks keep working.
+    ///     do not check that switch; the vanilla commands that rely on those checks keep working; and the check
+    ///     for achievements earned by holding other achievements, which vanilla never fires, is repaired.
+    ///   * <see cref="AchievementStatBackfill"/> - progress the game recorded while achievements were switched
+    ///     off is counted towards them when the character loads.
     ///   * <see cref="MainMenuPatches"/> - the main menu still shows the game is modded.
-    ///   * <see cref="CheatFlagPatches"/> - old cheat marks on characters and worlds stop showing in the
-    ///     achievements panel, each behind a config toggle.
+    ///   * <see cref="CheatFlagPatches"/> - the cheated flag is cleared from items as they load, so they stack
+    ///     again, and old cheat marks on characters and worlds stop showing in the achievements panel. Each is
+    ///     behind a config toggle.
     ///   * <see cref="ClearCheatedItemsCommand"/> - a cheat command clears the cheated flag from carried items.
     /// </summary>
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
@@ -29,7 +33,7 @@ namespace AchievementEnabler
     {
         public const string PluginGUID = "MidnightsFX.AchievementEnabler";
         public const string PluginName = "AchievementEnabler";
-        public const string PluginVersion = "0.3.3";
+        public const string PluginVersion = "0.4.0";
 
         internal static ManualLogSource Log;
 

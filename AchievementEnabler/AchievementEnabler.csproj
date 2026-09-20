@@ -32,8 +32,9 @@
 
   <!--
     Compiled against the game. Everything this plugin reads or writes is public, so the plain
-    assemblies are enough and nothing needs publicizing: assembly_valheim for the game itself, and
-    assembly_guiutils for Localization. The two private methods it patches (FejdStartup.SetupGui,
+    assemblies are enough and nothing needs publicizing: assembly_valheim for the game itself,
+    assembly_guiutils for Localization, and assembly_utils for ZPackage, which turns up in the signatures
+    of the two Load methods the cheat-flag patches target. The two private methods it patches (FejdStartup.SetupGui,
     PlayerProfile.LoadPlayerFromDisk) are named by string in their [HarmonyPatch] attributes, and the
     plugin applies each patch class on its own so a rename breaks only that one.
 
@@ -56,6 +57,10 @@
     </Reference>
     <Reference Include="assembly_guiutils">
       <HintPath>$(VALHEIM_MANAGED)\assembly_guiutils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_utils">
+      <HintPath>$(VALHEIM_MANAGED)\assembly_utils.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <!-- Both are needed. MonoBehaviour lives in UnityEngine.CoreModule, but BepInEx's
