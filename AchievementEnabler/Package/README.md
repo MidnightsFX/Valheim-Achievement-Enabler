@@ -33,6 +33,19 @@ other cheat commands, it only works in singleplayer or for the host.
 **Achievements earned by holding other achievements now arrive on time.** Child of Odin and Kings & Queens
 are awarded by a check the game gets backwards, so vanilla never hands them out while you are playing.
 
+**Optionally, see what your achievements ask for.** Turn on `ShowAllRequirements` and every achievement you
+already know about opens, including the ones the game keeps shut, like The Homesteader, and its details name
+every requirement with your progress towards it, not just the ones you have already met. Child of Odin and
+Kings & Queens list the achievements they need. Secret achievements you have not earned stay concealed, and
+so does anything that would give one away: The Viking still shows "???" for the bosses you have not killed.
+
+**Optionally, see every achievement.** Turn on `ShowSecretAchievements` and secret achievements show their
+real name and description instead of "Concealed" and "Only Odin knows what is hidden here." That spoils
+them, so it is worth leaving off until you want to know. With both on, you see every achievement and
+everything it asks for.
+
+Both are client side and off by default. They only change what your own panel shows, never what counts.
+
 ## What this can't fix
 
 Some achievements have conditions in the game itself that have nothing to do with cheating, and this mod

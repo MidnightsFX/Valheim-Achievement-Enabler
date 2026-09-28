@@ -27,13 +27,15 @@ namespace AchievementEnabler
     ///     again, and old cheat marks on characters and worlds stop showing in the achievements panel. Each is
     ///     behind a config toggle.
     ///   * <see cref="ClearCheatedItemsCommand"/> - a cheat command clears the cheated flag from carried items.
+    ///   * <see cref="AchievementsPanelPatches"/> - optionally, and each on its own toggle, the achievements panel
+    ///     names every requirement with its progress instead of "???", and reveals secret achievements.
     /// </summary>
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class AchievementEnabler : BaseUnityPlugin
     {
         public const string PluginGUID = "MidnightsFX.AchievementEnabler";
         public const string PluginName = "AchievementEnabler";
-        public const string PluginVersion = "0.4.0";
+        public const string PluginVersion = "0.4.1";
 
         internal static ManualLogSource Log;
 

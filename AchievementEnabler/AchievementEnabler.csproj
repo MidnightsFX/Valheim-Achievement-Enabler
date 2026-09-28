@@ -34,11 +34,15 @@
     Compiled against the game. Everything this plugin reads or writes is public, so the plain
     assemblies are enough and nothing needs publicizing: assembly_valheim for the game itself,
     assembly_guiutils for Localization, and assembly_utils for ZPackage, which turns up in the signatures
-    of the two Load methods the cheat-flag patches target. The two private methods it patches (FejdStartup.SetupGui,
-    PlayerProfile.LoadPlayerFromDisk) are named by string in their [HarmonyPatch] attributes, and the
-    plugin applies each patch class on its own so a rename breaks only that one.
+    of the two Load methods the cheat-flag patches target. The private methods it patches (FejdStartup.SetupGui,
+    PlayerProfile.LoadPlayerFromDisk, Achievements.Initialize, InventoryGui.UpdateAchievementsList,
+    AchievementsGui.CreateStatRow) are named by string in their [HarmonyPatch] attributes, and the
+    plugin applies each patch class on its own so a rename breaks only that one. The private fields the
+    achievements-panel patch needs reach it through Harmony's ___field parameters, not the compiler.
 
-    UnityEngine.CoreModule is needed too: BepInEx's BaseUnityPlugin derives from MonoBehaviour.
+    UnityEngine.CoreModule is needed too: BepInEx's BaseUnityPlugin derives from MonoBehaviour. So are
+    Unity.TextMeshPro and UnityEngine.UI, for the text on an achievement's details rows: the rows hand out
+    TextMeshProUGUI, whose base classes live in UnityEngine.UI.
 
     Everything here is supplied at runtime, hence Private=false.
   -->
@@ -72,6 +76,14 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(VALHEIM_MANAGED)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(VALHEIM_MANAGED)\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(VALHEIM_MANAGED)\UnityEngine.UI.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

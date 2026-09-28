@@ -19,6 +19,8 @@ namespace AchievementEnabler {
         public static ConfigEntry<bool> IgnoreWorldCheatFlag;
         public static ConfigEntry<bool> ClearItemCheatFlagOnLoad;
         public static ConfigEntry<bool> BackfillAchievementStats;
+        public static ConfigEntry<bool> ShowAllRequirements;
+        public static ConfigEntry<bool> ShowSecretAchievements;
 
         public static void Init(ConfigFile config) {
             cfg = config;
@@ -57,6 +59,23 @@ namespace AchievementEnabler {
                 "therefore in the raw table only, and the game never goes back for it - which is why a character\n" +
                 "with hundreds of trees felled can still show no progress towards Lumberjack. This copies the raw\n" +
                 "numbers across when the character loads, taking the higher of the two, so nothing is counted twice.");
+
+            ShowAllRequirements = cfg.Bind("AchievementsPanel", "ShowAllRequirements", false,
+                "Show what the achievements you already know about ask for. Every achievement in the panel that is\n" +
+                "not concealed opens, including the ones the game keeps shut, such as The Homesteader, and its\n" +
+                "details name every requirement with your progress, not only the ones already met. Achievements\n" +
+                "earned by holding others list those others. Secret achievements you have not earned stay\n" +
+                "concealed, and so does any requirement that would give one away, such as the bosses The Viking\n" +
+                "asks for. Turn on ShowSecretAchievements too to see every achievement and every requirement.\n" +
+                "Client side: changes only what your own panel shows, never what counts or unlocks, and takes\n" +
+                "effect the next time the panel is opened.");
+
+            ShowSecretAchievements = cfg.Bind("AchievementsPanel", "ShowSecretAchievements", false,
+                "Show every achievement in the achievements panel. Secret achievements are listed under their real\n" +
+                "name and description instead of \"Concealed\" and \"Only Odin knows what is hidden here.\". With\n" +
+                "ShowAllRequirements on too, every achievement opens and names every requirement. Off by default\n" +
+                "because it spoils them. Client side: changes only what your own panel shows, never what counts or\n" +
+                "unlocks, and takes effect the next time the panel is opened.");
 
             cfg.Save();
             cfg.SaveOnConfigSet = true;

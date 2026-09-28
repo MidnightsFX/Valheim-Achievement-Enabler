@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.1
+- New option `ShowAllRequirements`, off by default: every achievement you already know about opens in the
+  achievements panel, including the ones the game keeps shut, and its details name every requirement with
+  your progress instead of "???". Secret achievements you have not earned stay concealed, and so do
+  requirements that would give them away.
+- New option `ShowSecretAchievements`, off by default: the achievements panel shows secret achievements
+  under their real name and description instead of "Concealed". With both on, you see every achievement and
+  every requirement.
+
 ## 0.4.0
 - Cheated items stack again. Valheim 1.0.14 stopped a flagged item stacking with a clean one, so a single
   flagged stack kept splitting every stack of that item. The flag is now cleared from every item as it
