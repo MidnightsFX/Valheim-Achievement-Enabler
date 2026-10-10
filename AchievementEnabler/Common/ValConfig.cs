@@ -17,6 +17,7 @@ namespace AchievementEnabler {
         public static ConfigEntry<bool> EnableDebugMode;
         public static ConfigEntry<bool> ClearCharacterCheatFlag;
         public static ConfigEntry<bool> IgnoreWorldCheatFlag;
+        public static ConfigEntry<bool> VanillaOnlyRequirements;
 
         public static void Init(ConfigFile config) {
             cfg = config;
@@ -41,11 +42,17 @@ namespace AchievementEnabler {
                 "key the World Modifiers screen cannot set. That no longer blocks achievements, but without this\n" +
                 "such a world still gets a cheated notice in the achievements panel. The keys are left alone.");
 
+            VanillaOnlyRequirements = cfg.Bind("Achievements", "VanillaOnlyRequirements", false,
+                "Limit the craft-, eat-, build-, find- and kill-everything achievements to vanilla items, food, build\n" +
+                "pieces, trophies and creatures, leaving out what other mods add. Client-side, and can be changed\n" +
+                "while the game is running. Achievements this lets you unlock stay unlocked if you turn it off again.");
+
             cfg.Save();
             cfg.SaveOnConfigSet = true;
 
             Logger.CheckEnableDebugLogging();
             EnableDebugMode.SettingChanged += Logger.EnableDebugLogging;
+            VanillaOnlyRequirements.SettingChanged += VanillaRequirementPatches.Reapply;
         }
     }
 }

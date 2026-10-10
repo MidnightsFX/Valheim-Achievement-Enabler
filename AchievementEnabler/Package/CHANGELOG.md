@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+- New option `VanillaOnlyRequirements` (off by default, client-side): the craft-, eat-, build-, find- and
+  kill-everything achievements only ask for vanilla content, leaving out items, pieces and creatures added
+  by other mods. Can be changed while the game is running.
+
 ## 0.3.2
 - Adds flexible support for older and newer builds setting BypassCheatChecks
 

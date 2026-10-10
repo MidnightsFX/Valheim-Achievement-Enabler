@@ -21,6 +21,8 @@ namespace AchievementEnabler
     ///   * <see cref="MainMenuPatches"/> - the main menu still shows the game is modded.
     ///   * <see cref="CheatFlagPatches"/> - old cheat marks on characters and worlds stop showing in the
     ///     achievements panel, each behind a config toggle.
+    ///   * <see cref="VanillaRequirementPatches"/> - optionally, the craft-, eat-, build-, find- and kill-everything
+    ///     achievements only ask for vanilla content, not what other mods add.
     ///   * <see cref="ClearCheatedItemsCommand"/> - a cheat command clears the cheated flag from carried items.
     /// </summary>
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
