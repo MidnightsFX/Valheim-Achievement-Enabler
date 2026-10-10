@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0
+- New option `VanillaOnlyRequirements` (off by default, client-side): the craft-, eat-, build-, find- and
+  kill-everything achievements only ask for vanilla content, leaving out items, pieces and creatures added
+  by other mods. Can be changed while the game is running.
+
 ## 0.4.1
 - New option `ShowAllRequirements`, off by default: every achievement you already know about opens in the
   achievements panel, including the ones the game keeps shut, and its details name every requirement with

@@ -21,6 +21,7 @@ namespace AchievementEnabler {
         public static ConfigEntry<bool> BackfillAchievementStats;
         public static ConfigEntry<bool> ShowAllRequirements;
         public static ConfigEntry<bool> ShowSecretAchievements;
+        public static ConfigEntry<bool> VanillaOnlyRequirements;
 
         public static void Init(ConfigFile config) {
             cfg = config;
@@ -76,12 +77,17 @@ namespace AchievementEnabler {
                 "ShowAllRequirements on too, every achievement opens and names every requirement. Off by default\n" +
                 "because it spoils them. Client side: changes only what your own panel shows, never what counts or\n" +
                 "unlocks, and takes effect the next time the panel is opened.");
+            VanillaOnlyRequirements = cfg.Bind("Achievements", "VanillaOnlyRequirements", false,
+                "Limit the craft-, eat-, build-, find- and kill-everything achievements to vanilla items, food, build\n" +
+                "pieces, trophies and creatures, leaving out what other mods add. Client-side, and can be changed\n" +
+                "while the game is running. Achievements this lets you unlock stay unlocked if you turn it off again.");
 
             cfg.Save();
             cfg.SaveOnConfigSet = true;
 
             Logger.CheckEnableDebugLogging();
             EnableDebugMode.SettingChanged += Logger.EnableDebugLogging;
+            VanillaOnlyRequirements.SettingChanged += VanillaRequirementPatches.Reapply;
         }
     }
 }

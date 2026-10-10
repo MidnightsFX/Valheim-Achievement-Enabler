@@ -30,8 +30,21 @@ then run it in the console to clear the flag from everything your character is c
 the one case loading cannot: an item handed to you by a player who does not have this mod. Like the game's
 other cheat commands, it only works in singleplayer or for the host.
 
-**Achievements earned by holding other achievements now arrive on time.** Child of Odin and Kings & Queens
-are awarded by a check the game gets backwards, so vanilla never hands them out while you are playing.
+## Vanilla-only achievement lists (optional)
+
+Some achievements ask for everything of a kind: craft every weapon, item or food, eat every food, place every
+build piece, find every trophy, kill every creature. The game builds those lists from whatever is loaded, so
+content mods add their own items, pieces and creatures to them, some of which you may never be able to get.
+
+Set `VanillaOnlyRequirements = true` in the `[Achievements]` section of `MidnightsFX.AchievementEnabler.cfg` to
+limit those lists to vanilla content. It is off by default, only affects your own game (nothing to set on the
+server), and can be changed while the game is running.
+
+If the shorter list means you have already done everything an achievement asks for, it unlocks straight away.
+Turning the option back off puts the modded entries back in the lists, but doesn't take away achievements
+already unlocked on Steam.
+
+## What still shows as cheated
 
 **Optionally, see what your achievements ask for.** Turn on `ShowAllRequirements` and every achievement you
 already know about opens, including the ones the game keeps shut, like The Homesteader, and its details name

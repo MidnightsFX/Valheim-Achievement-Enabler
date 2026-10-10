@@ -23,9 +23,10 @@ namespace AchievementEnabler
     ///   * <see cref="AchievementStatBackfill"/> - progress the game recorded while achievements were switched
     ///     off is counted towards them when the character loads.
     ///   * <see cref="MainMenuPatches"/> - the main menu still shows the game is modded.
-    ///   * <see cref="CheatFlagPatches"/> - the cheated flag is cleared from items as they load, so they stack
-    ///     again, and old cheat marks on characters and worlds stop showing in the achievements panel. Each is
-    ///     behind a config toggle.
+    ///   * <see cref="CheatFlagPatches"/> - old cheat marks on characters and worlds stop showing in the
+    ///     achievements panel, each behind a config toggle.
+    ///   * <see cref="VanillaRequirementPatches"/> - optionally, the craft-, eat-, build-, find- and kill-everything
+    ///     achievements only ask for vanilla content, not what other mods add.
     ///   * <see cref="ClearCheatedItemsCommand"/> - a cheat command clears the cheated flag from carried items.
     ///   * <see cref="AchievementsPanelPatches"/> - optionally, and each on its own toggle, the achievements panel
     ///     names every requirement with its progress instead of "???", and reveals secret achievements.
