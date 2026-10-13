@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+- Fixes best-ever stats, such as the most days survived in a row, being lowered after a world's combat difficulty changes, which could relock achievements already earned.
+- Puts back best-ever stats the game had already lowered when a character loads.
+
 ## 0.5.0
 - New option `VanillaOnlyRequirements` (off by default, client-side): the craft-, eat-, build-, find- and
   kill-everything achievements only ask for vanilla content, leaving out items, pieces and creatures added

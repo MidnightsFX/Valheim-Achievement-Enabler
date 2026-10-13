@@ -22,6 +22,8 @@ namespace AchievementEnabler
     ///     for achievements earned by holding other achievements, which vanilla never fires, is repaired.
     ///   * <see cref="AchievementStatBackfill"/> - progress the game recorded while achievements were switched
     ///     off is counted towards them when the character loads.
+    ///   * <see cref="BestStatPatches"/> - best-ever stats, such as the most days survived in a row, are never
+    ///     lowered by a change of combat difficulty, and ones the game already lowered are put back on load.
     ///   * <see cref="MainMenuPatches"/> - the main menu still shows the game is modded.
     ///   * <see cref="CheatFlagPatches"/> - old cheat marks on characters and worlds stop showing in the
     ///     achievements panel, each behind a config toggle.
@@ -36,7 +38,7 @@ namespace AchievementEnabler
     {
         public const string PluginGUID = "MidnightsFX.AchievementEnabler";
         public const string PluginName = "AchievementEnabler";
-        public const string PluginVersion = "0.5.0";
+        public const string PluginVersion = "0.5.1";
 
         internal static ManualLogSource Log;
 

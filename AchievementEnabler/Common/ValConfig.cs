@@ -19,6 +19,7 @@ namespace AchievementEnabler {
         public static ConfigEntry<bool> IgnoreWorldCheatFlag;
         public static ConfigEntry<bool> ClearItemCheatFlagOnLoad;
         public static ConfigEntry<bool> BackfillAchievementStats;
+        public static ConfigEntry<bool> KeepBestStats;
         public static ConfigEntry<bool> ShowAllRequirements;
         public static ConfigEntry<bool> ShowSecretAchievements;
         public static ConfigEntry<bool> VanillaOnlyRequirements;
@@ -60,6 +61,15 @@ namespace AchievementEnabler {
                 "therefore in the raw table only, and the game never goes back for it - which is why a character\n" +
                 "with hundreds of trees felled can still show no progress towards Lumberjack. This copies the raw\n" +
                 "numbers across when the character loads, taking the higher of the two, so nothing is counted twice.");
+
+            KeepBestStats = cfg.Bind("Achievements", "KeepBestStats", true,
+                "Stop the game lowering your best-ever stats, and put back the ones it already lowered: most days\n" +
+                "survived in a row, highest comfort, highest piece built, and the most of each kind of piece built\n" +
+                "around you. The game checks a new value against your best at the world's current combat difficulty\n" +
+                "only, then writes it over your overall best, so the first days after a change of difficulty can\n" +
+                "write a small number over a large one and relock achievements such as surviving 30 days. With this\n" +
+                "on, a best is only ever raised, your best run of days keeps up with your current one, and bests the\n" +
+                "game already lowered are put back from its per-difficulty records when the character loads.");
 
             ShowAllRequirements = cfg.Bind("AchievementsPanel", "ShowAllRequirements", false,
                 "Show what the achievements you already know about ask for. Every achievement in the panel that is\n" +

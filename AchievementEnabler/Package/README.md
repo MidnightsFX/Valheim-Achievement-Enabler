@@ -16,6 +16,15 @@ Lumberjack. Your raw totals are now copied across when the character loads, taki
 higher so nothing is counted twice. Turn it off with `BackfillAchievementStats` if you would rather start
 from where the game left you.
 
+**Your best-ever stats stop going down.** A few achievements read a record rather than a total: the most
+days survived in a row, your highest comfort, your highest build, and how much of each kind of piece you have
+built in one place. The game checks each new value against your record at the world's current combat
+difficulty only, then writes it over your overall record. So after a world's difficulty changes, or on your
+first visit to a world at another difficulty, the first few days write a small number over your real best,
+and an achievement like surviving 30 days in a row relocks. Records now only ever go up, your best run of
+days keeps up with the run you are on, and records the game already lowered are put back when the character
+loads, from the per-difficulty records it kept. Turn it off with `KeepBestStats`.
+
 **Old cheat marks are cleared.** Characters, worlds and items that were already marked as cheated stop
 showing as cheated. A character's mark is cleared each time it loads, a world's keys are left alone, and an
 item's flag is cleared as the item loads — from your inventory, chests, tombstones or the ground. Each can be
